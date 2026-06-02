@@ -7,7 +7,7 @@ dependencies:
   - numpy
   - pandas
   - pip:
-      - mlflow==2.19.0
+      - mlflow==2.22.5
       - dagshub
       - scikit-learn
       - seaborn

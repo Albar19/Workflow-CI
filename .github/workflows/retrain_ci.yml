@@ -55,7 +55,16 @@ jobs:
       - name: Build Docker Image from MLflow Model
         working-directory: MLProject
         run: |
-          mlflow models build-docker -m artifacts/model -n albar19/msml-model:${{ github.sha }}
+          cat << 'EOF' > Dockerfile
+          FROM python:3.12-slim
+          WORKDIR /opt/mlflow
+          RUN pip install --no-cache-dir mlflow==2.22.5 dagshub numpy pandas scikit-learn seaborn matplotlib
+          COPY artifacts/model /opt/mlflow/model
+          ENV MLFLOW_MODEL_DIR=/opt/mlflow/model
+          EXPOSE 8080
+          CMD ["mlflow", "models", "serve", "-m", "/opt/mlflow/model", "--host", "0.0.0.0", "--port", "8080"]
+          EOF
+          docker build -t albar19/msml-model:${{ github.sha }} .
 
       - name: Tag Docker Image as Latest
         run: |

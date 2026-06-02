@@ -13,6 +13,7 @@ Author: Muhamad Hafizh Albar
 
 import json
 import os
+import shutil
 from pathlib import Path
 
 import matplotlib
@@ -65,6 +66,11 @@ def train_and_tune() -> None:
     artifact_dir = base_dir / "artifacts"
     plots_dir = artifact_dir / "plots"
     model_dir = artifact_dir / "model"
+    
+    # Clean up model_dir if it exists to avoid MLflowException
+    if model_dir.exists():
+        shutil.rmtree(model_dir)
+        
     plots_dir.mkdir(parents=True, exist_ok=True)
     model_dir.mkdir(parents=True, exist_ok=True)
 

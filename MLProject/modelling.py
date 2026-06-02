@@ -133,9 +133,18 @@ def train_and_tune() -> None:
         mlflow.log_metric("precision", precision)
         mlflow.log_metric("recall", recall)
 
+        # Infer Signature and Input Example for MLflow to remove WARNING
+        from mlflow.models.signature import infer_signature
+        signature = infer_signature(X_train, model.predict(X_train))
+        input_example = X_train.iloc[:5]
+
         # Log model to MLflow & save locally
-        mlflow.sklearn.log_model(model, "model")
-        mlflow.sklearn.save_model(model, str(model_dir))
+        mlflow.sklearn.log_model(
+            model, "model", signature=signature, input_example=input_example
+        )
+        mlflow.sklearn.save_model(
+            model, str(model_dir), signature=signature, input_example=input_example
+        )
 
         # Save metrics JSON
         metrics_path = artifact_dir / "metrics.json"

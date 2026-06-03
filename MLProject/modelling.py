@@ -62,7 +62,7 @@ def train_and_tune() -> None:
     _configure_mlflow()
 
     base_dir = Path(__file__).resolve().parent
-    data_path = base_dir / "namadataset_preprocessing" / "clean_data.csv"
+    data_path = base_dir / "Telco-Customer-Churn_preprocessing" / "clean_data.csv"
     artifact_dir = base_dir / "artifacts"
     plots_dir = artifact_dir / "plots"
     model_dir = artifact_dir / "model"
